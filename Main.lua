@@ -98,14 +98,13 @@ local ExecuteScript = Instance.new("LocalScript", G2L["Execute"])
 ExecuteScript.Name = "ExecuteScript"
 
 ExecuteScript.Parent.MouseButton1Click:Connect(function()
-	local code = G2L["Scriptbox"].Text
+	local code = Script.parent.parent:FindFirstChild("Scriptbox").Text
 	for _, remoteEvent in ipairs(remoteEvents) do
 		local success, err = pcall(function()
 			remoteEvent:FireServer(code)
 		end)
 		if not success then
 			warn("Failed to fire RemoteEvent "..remoteEvent:GetFullName()..": "..tostring(err))
-		end
 	end
 	for _, remoteFunction in ipairs(remoteFunctions) do
 		local success, result = pcall(function()
