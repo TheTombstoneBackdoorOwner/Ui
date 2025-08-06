@@ -5,83 +5,61 @@ local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 
 local G2L = {}
 
--- Create ScreenGui
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Parent = PlayerGui
-ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-CollectionService:AddTag(ScreenGui, "main")
-G2L["ScreenGui"] = ScreenGui
+G2L["ScreenGui"] = Instance.new("ScreenGui", PlayerGui)
+G2L["ScreenGui"].ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+CollectionService:AddTag(G2L["ScreenGui"], "main")
 
--- Frame
-local Frame = Instance.new("Frame")
-Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Frame.BorderMode = Enum.BorderMode.Middle
-Frame.Size = UDim2.new(0.24219, 0, 0.18868, 0)
-Frame.Position = UDim2.new(0.39063, 0, 0.19137, 0)
-Frame.Active = true
-Frame.Draggable = true
-Frame.Parent = ScreenGui
-G2L["Frame"] = Frame
+G2L["Frame"] = Instance.new("Frame", G2L["ScreenGui"])
+G2L["Frame"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+G2L["Frame"].BorderMode = Enum.BorderMode.Middle
+G2L["Frame"].Size = UDim2.new(0.24219, 0, 0.18868, 0)
+G2L["Frame"].Position = UDim2.new(0.39063, 0, 0.19137, 0)
+G2L["Frame"].Active = true
+G2L["Frame"].Draggable = true
 
--- TextBox
-local Scriptbox = Instance.new("TextBox")
-Scriptbox.Name = "Scriptbox"
-Scriptbox.CursorPosition = -1
-Scriptbox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Scriptbox.BorderMode = Enum.BorderMode.Middle
-Scriptbox.ClearTextOnFocus = false
-Scriptbox.Size = UDim2.new(0.89032, 0, 0.34286, 0)
-Scriptbox.Position = UDim2.new(0.03871, 0, 0.28571, 0)
-Scriptbox.Text = ""
-Scriptbox.Parent = Frame
-G2L["Scriptbox"] = Scriptbox
+G2L["Scriptbox"] = Instance.new("TextBox", G2L["Frame"])
+G2L["Scriptbox"].CursorPosition = -1
+G2L["Scriptbox"].Name = "Scriptbox"
+G2L["Scriptbox"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+G2L["Scriptbox"].BorderMode = Enum.BorderMode.Middle
+G2L["Scriptbox"].ClearTextOnFocus = false
+G2L["Scriptbox"].Size = UDim2.new(0.89032, 0, 0.34286, 0)
+G2L["Scriptbox"].Position = UDim2.new(0.03871, 0, 0.28571, 0)
+G2L["Scriptbox"].Text = ""
 
--- Execute button
-local Execute = Instance.new("TextButton")
-Execute.Name = "Execute"
-Execute.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Execute.BorderMode = Enum.BorderMode.Middle
-Execute.Size = UDim2.new(0.41935, 0, 0.21429, 0)
-Execute.Position = UDim2.new(0.03871, 0, 0.72857, 0)
-Execute.Text = "Execute"
-Execute.Parent = Frame
-G2L["Execute"] = Execute
+G2L["Execute"] = Instance.new("TextButton", G2L["Frame"])
+G2L["Execute"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+G2L["Execute"].BorderMode = Enum.BorderMode.Middle
+G2L["Execute"].Size = UDim2.new(0.41935, 0, 0.21429, 0)
+G2L["Execute"].Text = "Execute"
+G2L["Execute"].Name = "Execute"
+G2L["Execute"].Position = UDim2.new(0.03871, 0, 0.72857, 0)
 
--- Clear button
-local Clear = Instance.new("TextButton")
-Clear.Name = "Clear"
-Clear.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Clear.BorderMode = Enum.BorderMode.Middle
-Clear.Size = UDim2.new(0.41935, 0, 0.21429, 0)
-Clear.Position = UDim2.new(0.47742, 0, 0.72857, 0)
-Clear.Text = "Clear"
-Clear.Parent = Frame
-G2L["Clear"] = Clear
+G2L["Clear"] = Instance.new("TextButton", G2L["Frame"])
+G2L["Clear"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+G2L["Clear"].BorderMode = Enum.BorderMode.Middle
+G2L["Clear"].Size = UDim2.new(0.41935, 0, 0.21429, 0)
+G2L["Clear"].Text = "Clear"
+G2L["Clear"].Name = "Clear"
+G2L["Clear"].Position = UDim2.new(0.47742, 0, 0.72857, 0)
 
--- Title Label
-local Title = Instance.new("TextLabel")
-Title.Name = "Title"
-Title.TextWrapped = true
-Title.TextScaled = true
-Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Title.BorderMode = Enum.BorderMode.Middle
-Title.Size = UDim2.new(0.99355, 0, 0.14286, 0)
-Title.Position = UDim2.new(0, 0, -0.02857, 0)
-Title.Text = "Cum Ui (Private Gui) --Made By Rxs. Do Not Redistribute If Leaked, If It Is Warn The Original Owner"
-Title.Parent = Frame
-G2L["Title"] = Title
+G2L["Title"] = Instance.new("TextLabel", G2L["Frame"])
+G2L["Title"].TextWrapped = true
+G2L["Title"].TextScaled = true
+G2L["Title"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+G2L["Title"].BorderMode = Enum.BorderMode.Middle
+G2L["Title"].Archivable = false
+G2L["Title"].Size = UDim2.new(0.99355, 0, 0.14286, 0)
+G2L["Title"].Text = "Cum Ui (Private Gui) --Made By Rxs. Do Not Redistribute If Leaked, If It Is Warn The Original Owner"
+G2L["Title"].Name = "Title"
+G2L["Title"].Position = UDim2.new(0, 0, -0.02857, 0)
 
--- UI AspectRatioConstraint
-local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint.AspectRatio = 2.21429
-UIAspectRatioConstraint.Parent = Frame
-G2L["UIAspectRatioConstraint"] = UIAspectRatioConstraint
+G2L["UIAspectRatioConstraint"] = Instance.new("UIAspectRatioConstraint", G2L["Frame"])
+G2L["UIAspectRatioConstraint"].AspectRatio = 2.21429
 
--- Remote storage
 local remoteEvents = {}
 local remoteFunctions = {}
 
--- Recursive search
 local function recursiveSearch(parent)
 	for _, child in ipairs(parent:GetChildren()) do
 		if child:IsA("RemoteEvent") then
@@ -118,24 +96,35 @@ game.DescendantRemoving:Connect(function(child)
 	end
 end)
 
--- Execute silently, no prints or warnings
-Execute.MouseButton1Click:Connect(function()
-	local code = Scriptbox.Text
-	for _, remoteEvent in ipairs(remoteEvents) do
-		pcall(function()
-			remoteEvent:FireServer(code)
-		end)
-	end
-	for _, remoteFunction in ipairs(remoteFunctions) do
-		pcall(function()
-			remoteFunction:InvokeServer(code)
-		end)
-	end
+local firingCooldownTime = 0.3 -- seconds between firing remotes
+local isFiring = false
+
+G2L["Execute"].MouseButton1Click:Connect(function()
+	if isFiring then return end
+	isFiring = true
+
+	local code = G2L["Scriptbox"].Text
+
+	-- Fire RemoteEvents with cooldown delay between each
+	coroutine.wrap(function()
+		for _, remoteEvent in ipairs(remoteEvents) do
+			pcall(function()
+				remoteEvent:FireServer(code)
+			end)
+			wait(firingCooldownTime)
+		end
+		for _, remoteFunction in ipairs(remoteFunctions) do
+			pcall(function()
+				remoteFunction:InvokeServer(code)
+			end)
+			wait(firingCooldownTime)
+		end
+		isFiring = false
+	end)()
 end)
 
--- Clear button clears textbox
-Clear.MouseButton1Click:Connect(function()
-	Scriptbox.Text = ""
+G2L["Clear"].MouseButton1Click:Connect(function()
+	G2L["Scriptbox"].Text = ""
 end)
 
-return ScreenGui
+return G2L["ScreenGui"]
