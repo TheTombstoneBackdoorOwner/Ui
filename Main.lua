@@ -16,6 +16,8 @@ Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Frame.BorderMode = Enum.BorderMode.Middle
 Frame.Size = UDim2.new(0.24219, 0, 0.18868, 0)
 Frame.Position = UDim2.new(0.39063, 0, 0.19137, 0)
+Frame.Active = true
+Frame.Draggable = true
 
 local Title = Instance.new("TextLabel", Frame)
 Title.Name = "Title"
