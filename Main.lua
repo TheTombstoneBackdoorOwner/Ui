@@ -29,7 +29,7 @@ title.Size = UDim2.new(1, 0, 0.2, 0)
 title.BackgroundTransparency = 1
 title.TextColor3 = Color3.fromRGB(30, 30, 30)
 title.TextScaled = true
-title.Text = "Backdoor Scanner (Private)"
+title.Text = "Daf UI (Private)"
 title.Font = Enum.Font.GothamBold
 title.TextXAlignment = Enum.TextXAlignment.Center
 
