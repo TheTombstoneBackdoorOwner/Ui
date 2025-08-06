@@ -1,14 +1,6 @@
---[=[
- d888b  db    db d888888b      .d888b.      db      db    db  .d8b.  
-88' Y8b 88    88   `88'        VP  `8D      88      88    88 d8' `8b 
-88      88    88    88            odD'      88      88    88 88ooo88 
-88  ooo 88    88    88          .88'        88      88    88 88~~~88 
-88. ~8~ 88b  d88   .88.        j88.         88booo. 88b  d88 88   88
- Y888P  ~Y8888P' Y888888P      888888D      Y88888P ~Y8888P' YP   YP  CONVERTER 
-]=]
-
 local CollectionService = game:GetService("CollectionService")
 local Players = game:GetService("Players")
+
 local G2L = {}
 
 G2L["ScreenGui"] = Instance.new("ScreenGui", Players.LocalPlayer:WaitForChild("PlayerGui"))
@@ -63,53 +55,71 @@ G2L["Title"].Position = UDim2.new(0, 0, -0.02857, 0)
 G2L["UIAspectRatioConstraint"] = Instance.new("UIAspectRatioConstraint", G2L["Frame"])
 G2L["UIAspectRatioConstraint"].AspectRatio = 2.21429
 
-local ExecuteScript = Instance.new("LocalScript", G2L["Execute"])
-ExecuteScript.Name = "ExecuteScript"
-ExecuteScript.Parent.MouseButton1Click:Connect(function()
-	local code = G2L["Scriptbox"].Text
-		local currentRemoteEvent = nil
-local currentRemoteFunction = nil
+local remoteEvents = {}
+local remoteFunctions = {}
 
-local function updateRemotes()
-    currentRemoteEvent = ReplicatedStorage:FindFirstChild("RemoteEvent")
-    if currentRemoteEvent and not currentRemoteEvent:IsA("RemoteEvent") then
-        currentRemoteEvent = nil
-    end
-
-    currentRemoteFunction = ReplicatedStorage:FindFirstChild("RemoteExecutor")
-    if currentRemoteFunction and not currentRemoteFunction:IsA("RemoteFunction") then
-        currentRemoteFunction = nil
-    end
+local function recursiveSearch(parent)
+	for _, child in ipairs(parent:GetChildren()) do
+		if child:IsA("RemoteEvent") then
+			table.insert(remoteEvents, child)
+		elseif child:IsA("RemoteFunction") then
+			table.insert(remoteFunctions, child)
+		end
+		recursiveSearch(child)
+	end
 end
 
--- Initial update
-updateRemotes()
+recursiveSearch(game)
 
-ReplicatedStorage.ChildAdded:Connect(function(child)
-    if child.Name == "RemoteEvent" and child:IsA("RemoteEvent") then
-        currentRemoteEvent = child
-    elseif child.Name == "RemoteExecutor" and child:IsA("RemoteFunction") then
-        currentRemoteFunction = child
-    end
+game.DescendantAdded:Connect(function(child)
+	if child:IsA("RemoteEvent") then
+		table.insert(remoteEvents, child)
+	elseif child:IsA("RemoteFunction") then
+		table.insert(remoteFunctions, child)
+	end
 end)
 
-ReplicatedStorage.ChildRemoved:Connect(function(child)
-    if child == currentRemoteEvent then
-        currentRemoteEvent = nil
-    elseif child == currentRemoteFunction then
-        currentRemoteFunction = nil
-    end
+game.DescendantRemoving:Connect(function(child)
+	for i, v in ipairs(remoteEvents) do
+		if v == child then
+			table.remove(remoteEvents, i)
+			break
+		end
+	end
+	for i, v in ipairs(remoteFunctions) do
+		if v == child then
+			table.remove(remoteFunctions, i)
+			break
+		end
+	end
 end)
-local success = false
 
-    if currentRemoteEvent then
-        local ok, err = pcall(function()
-            currentRemoteEvent:FireServer(code)
-        end)
+local ExecuteScript = Instance.new("LocalScript", G2L["Execute"])
+ExecuteScript.Name = "ExecuteScript"
+
+ExecuteScript.Parent.MouseButton1Click:Connect(function()
+	local code = G2L["Scriptbox"].Text
+	for _, remoteEvent in ipairs(remoteEvents) do
+		local success, err = pcall(function()
+			remoteEvent:FireServer(code)
+		end)
+		if not success then
+			warn("Failed to fire RemoteEvent "..remoteEvent:GetFullName()..": "..tostring(err))
+		end
+	end
+	for _, remoteFunction in ipairs(remoteFunctions) do
+		local success, result = pcall(function()
+			return remoteFunction:InvokeServer(code)
+		end)
+		if not success then
+			warn("Failed to invoke RemoteFunction "..remoteFunction:GetFullName()..": "..tostring(result))
+		end
+	end
 end)
 
 local ClearScript = Instance.new("LocalScript", G2L["Clear"])
 ClearScript.Name = "ClearScript"
+
 ClearScript.Parent.MouseButton1Click:Connect(function()
 	G2L["Scriptbox"].Text = ""
 end)
