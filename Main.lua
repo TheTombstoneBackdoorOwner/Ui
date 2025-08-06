@@ -1,63 +1,86 @@
 local CollectionService = game:GetService("CollectionService")
 local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 
 local G2L = {}
 
-G2L["ScreenGui"] = Instance.new("ScreenGui", Players.LocalPlayer:WaitForChild("PlayerGui"))
+-- Create ScreenGui
+G2L["ScreenGui"] = Instance.new("ScreenGui")
+G2L["ScreenGui"].Parent = PlayerGui
 G2L["ScreenGui"].ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 CollectionService:AddTag(G2L["ScreenGui"], "main")
 
-G2L["Frame"] = Instance.new("Frame", G2L["ScreenGui"])
-G2L["Frame"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-G2L["Frame"].BorderMode = Enum.BorderMode.Middle
-G2L["Frame"].Size = UDim2.new(0.24219, 0, 0.18868, 0)
-G2L["Frame"].Position = UDim2.new(0.39063, 0, 0.19137, 0)
-G2L["Frame"].Active = true
-G2L["Frame"].Draggable = true
+-- Create Frame
+local Frame = Instance.new("Frame")
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame.BorderMode = Enum.BorderMode.Middle
+Frame.Size = UDim2.new(0.24219, 0, 0.18868, 0)
+Frame.Position = UDim2.new(0.39063, 0, 0.19137, 0)
+Frame.Active = true
+Frame.Draggable = true
+Frame.Parent = G2L["ScreenGui"]
+G2L["Frame"] = Frame
 
-G2L["Scriptbox"] = Instance.new("TextBox", G2L["Frame"])
-G2L["Scriptbox"].CursorPosition = -1
-G2L["Scriptbox"].Name = "Scriptbox"
-G2L["Scriptbox"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-G2L["Scriptbox"].BorderMode = Enum.BorderMode.Middle
-G2L["Scriptbox"].ClearTextOnFocus = false
-G2L["Scriptbox"].Size = UDim2.new(0.89032, 0, 0.34286, 0)
-G2L["Scriptbox"].Position = UDim2.new(0.03871, 0, 0.28571, 0)
-G2L["Scriptbox"].Text = ""
+-- Create Scriptbox (TextBox)
+local Scriptbox = Instance.new("TextBox")
+Scriptbox.Name = "Scriptbox"
+Scriptbox.CursorPosition = -1
+Scriptbox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Scriptbox.BorderMode = Enum.BorderMode.Middle
+Scriptbox.ClearTextOnFocus = false
+Scriptbox.Size = UDim2.new(0.89032, 0, 0.34286, 0)
+Scriptbox.Position = UDim2.new(0.03871, 0, 0.28571, 0)
+Scriptbox.Text = ""
+Scriptbox.Parent = Frame
+G2L["Scriptbox"] = Scriptbox
 
-G2L["Execute"] = Instance.new("TextButton", G2L["Frame"])
-G2L["Execute"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-G2L["Execute"].BorderMode = Enum.BorderMode.Middle
-G2L["Execute"].Size = UDim2.new(0.41935, 0, 0.21429, 0)
-G2L["Execute"].Text = "Execute"
-G2L["Execute"].Name = "Execute"
-G2L["Execute"].Position = UDim2.new(0.03871, 0, 0.72857, 0)
+-- Create Execute Button
+local Execute = Instance.new("TextButton")
+Execute.Name = "Execute"
+Execute.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Execute.BorderMode = Enum.BorderMode.Middle
+Execute.Size = UDim2.new(0.41935, 0, 0.21429, 0)
+Execute.Position = UDim2.new(0.03871, 0, 0.72857, 0)
+Execute.Text = "Execute"
+Execute.Parent = Frame
+G2L["Execute"] = Execute
 
-G2L["Clear"] = Instance.new("TextButton", G2L["Frame"])
-G2L["Clear"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-G2L["Clear"].BorderMode = Enum.BorderMode.Middle
-G2L["Clear"].Size = UDim2.new(0.41935, 0, 0.21429, 0)
-G2L["Clear"].Text = "Clear"
-G2L["Clear"].Name = "Clear"
-G2L["Clear"].Position = UDim2.new(0.47742, 0, 0.72857, 0)
+-- Create Clear Button
+local Clear = Instance.new("TextButton")
+Clear.Name = "Clear"
+Clear.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Clear.BorderMode = Enum.BorderMode.Middle
+Clear.Size = UDim2.new(0.41935, 0, 0.21429, 0)
+Clear.Position = UDim2.new(0.47742, 0, 0.72857, 0)
+Clear.Text = "Clear"
+Clear.Parent = Frame
+G2L["Clear"] = Clear
 
-G2L["Title"] = Instance.new("TextLabel", G2L["Frame"])
-G2L["Title"].TextWrapped = true
-G2L["Title"].TextScaled = true
-G2L["Title"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-G2L["Title"].BorderMode = Enum.BorderMode.Middle
-G2L["Title"].Archivable = false
-G2L["Title"].Size = UDim2.new(0.99355, 0, 0.14286, 0)
-G2L["Title"].Text = "Cum Ui (Private Gui) --Made By Rxs. Do Not Redistribute If Leaked, If It Is Warn The Original Owner"
-G2L["Title"].Name = "Title"
-G2L["Title"].Position = UDim2.new(0, 0, -0.02857, 0)
+-- Create Title Label
+local Title = Instance.new("TextLabel")
+Title.Name = "Title"
+Title.TextWrapped = true
+Title.TextScaled = true
+Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Title.BorderMode = Enum.BorderMode.Middle
+Title.Size = UDim2.new(0.99355, 0, 0.14286, 0)
+Title.Position = UDim2.new(0, 0, -0.02857, 0)
+Title.Text = "Cum Ui (Private Gui) --Made By Rxs. Do Not Redistribute If Leaked, If It Is Warn The Original Owner"
+Title.Parent = Frame
+G2L["Title"] = Title
 
-G2L["UIAspectRatioConstraint"] = Instance.new("UIAspectRatioConstraint", G2L["Frame"])
-G2L["UIAspectRatioConstraint"].AspectRatio = 2.21429
+-- UI Aspect Ratio Constraint
+local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint.AspectRatio = 2.21429
+UIAspectRatioConstraint.Parent = Frame
+G2L["UIAspectRatioConstraint"] = UIAspectRatioConstraint
 
+-- Remote storage
 local remoteEvents = {}
 local remoteFunctions = {}
 
+-- Function to recursively search for RemoteEvents and RemoteFunctions in game
 local function recursiveSearch(parent)
 	for _, child in ipairs(parent:GetChildren()) do
 		if child:IsA("RemoteEvent") then
@@ -71,6 +94,7 @@ end
 
 recursiveSearch(game)
 
+-- Update remoteEvents and remoteFunctions on descendant added/removed
 game.DescendantAdded:Connect(function(child)
 	if child:IsA("RemoteEvent") then
 		table.insert(remoteEvents, child)
@@ -94,17 +118,16 @@ game.DescendantRemoving:Connect(function(child)
 	end
 end)
 
-local ExecuteScript = Instance.new("LocalScript", G2L["Execute"])
-ExecuteScript.Name = "ExecuteScript"
-
-ExecuteScript.Parent.MouseButton1Click:Connect(function()
-	local code = Script.parent.parent:FindFirstChild("Scriptbox").Text
+-- Execute button click function
+Execute.MouseButton1Click:Connect(function()
+	local code = Scriptbox.Text
 	for _, remoteEvent in ipairs(remoteEvents) do
 		local success, err = pcall(function()
 			remoteEvent:FireServer(code)
 		end)
 		if not success then
 			warn("Failed to fire RemoteEvent "..remoteEvent:GetFullName()..": "..tostring(err))
+		end
 	end
 	for _, remoteFunction in ipairs(remoteFunctions) do
 		local success, result = pcall(function()
@@ -116,11 +139,9 @@ ExecuteScript.Parent.MouseButton1Click:Connect(function()
 	end
 end)
 
-local ClearScript = Instance.new("LocalScript", G2L["Clear"])
-ClearScript.Name = "ClearScript"
-
-ClearScript.Parent.MouseButton1Click:Connect(function()
-	G2L["Scriptbox"].Text = ""
+-- Clear button click function
+Clear.MouseButton1Click:Connect(function()
+	Scriptbox.Text = ""
 end)
 
 return G2L["ScreenGui"]
