@@ -9,7 +9,7 @@ local G2L = {}
 -- BACKGROUND GUI with clean white theme --
 
 G2L["ScreenGui"] = Instance.new("ScreenGui", playerGui)
-G2L["ScreenGui"].Name = "BackdoorScannerUI"
+G2L["ScreenGui"].Name = "DafUI"
 CollectionService:AddTag(G2L["ScreenGui"], "main")
 
 local Frame = Instance.new("Frame", G2L["ScreenGui"])
