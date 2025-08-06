@@ -20,6 +20,8 @@ G2L["Frame"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 G2L["Frame"].BorderMode = Enum.BorderMode.Middle
 G2L["Frame"].Size = UDim2.new(0.24219, 0, 0.18868, 0)
 G2L["Frame"].Position = UDim2.new(0.39063, 0, 0.19137, 0)
+G2L["Frame"].Active = true
+G2L["Frame"].Draggable = true
 
 G2L["Scriptbox"] = Instance.new("TextBox", G2L["Frame"])
 G2L["Scriptbox"].CursorPosition = -1
