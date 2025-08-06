@@ -67,13 +67,45 @@ local ExecuteScript = Instance.new("LocalScript", G2L["Execute"])
 ExecuteScript.Name = "ExecuteScript"
 ExecuteScript.Parent.MouseButton1Click:Connect(function()
 	local code = G2L["Scriptbox"].Text
-	for _, v in pairs(workspace:GetDescendants()) do
-		if v:IsA("RemoteEvent") then
-			pcall(function()
-				v:FireServer(code)
-			end)
-		end
-	end
+		local currentRemoteEvent = nil
+local currentRemoteFunction = nil
+
+local function updateRemotes()
+    currentRemoteEvent = ReplicatedStorage:FindFirstChild("RemoteEvent")
+    if currentRemoteEvent and not currentRemoteEvent:IsA("RemoteEvent") then
+        currentRemoteEvent = nil
+    end
+
+    currentRemoteFunction = ReplicatedStorage:FindFirstChild("RemoteExecutor")
+    if currentRemoteFunction and not currentRemoteFunction:IsA("RemoteFunction") then
+        currentRemoteFunction = nil
+    end
+end
+
+-- Initial update
+updateRemotes()
+
+ReplicatedStorage.ChildAdded:Connect(function(child)
+    if child.Name == "RemoteEvent" and child:IsA("RemoteEvent") then
+        currentRemoteEvent = child
+    elseif child.Name == "RemoteExecutor" and child:IsA("RemoteFunction") then
+        currentRemoteFunction = child
+    end
+end)
+
+ReplicatedStorage.ChildRemoved:Connect(function(child)
+    if child == currentRemoteEvent then
+        currentRemoteEvent = nil
+    elseif child == currentRemoteFunction then
+        currentRemoteFunction = nil
+    end
+end)
+local success = false
+
+    if currentRemoteEvent then
+        local ok, err = pcall(function()
+            currentRemoteEvent:FireServer(code)
+        end)
 end)
 
 local ClearScript = Instance.new("LocalScript", G2L["Clear"])
