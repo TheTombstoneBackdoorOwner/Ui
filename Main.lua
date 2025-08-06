@@ -8,6 +8,8 @@ local G2L = {}
 G2L["ScreenGui"] = Instance.new("ScreenGui", playerGui)
 G2L["ScreenGui"].Name = "DafUI"
 G2L["ScreenGui"].ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+G2L["ScreenGui"].ResetOnDeath = false
+
 CollectionService:AddTag(G2L["ScreenGui"], "main")
 
 local Frame = Instance.new("Frame", G2L["ScreenGui"])
