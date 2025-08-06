@@ -1,130 +1,105 @@
 local CollectionService = game:GetService("CollectionService")
 local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local RunService = game:GetService("RunService")
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
 
 local G2L = {}
 
-G2L["ScreenGui"] = Instance.new("ScreenGui", PlayerGui)
-G2L["ScreenGui"].ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+-- Basic UI setup --
+G2L["ScreenGui"] = Instance.new("ScreenGui", playerGui)
+G2L["ScreenGui"].Name = "BackdoorScannerUI"
 CollectionService:AddTag(G2L["ScreenGui"], "main")
 
-G2L["Frame"] = Instance.new("Frame", G2L["ScreenGui"])
-G2L["Frame"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-G2L["Frame"].BorderMode = Enum.BorderMode.Middle
-G2L["Frame"].Size = UDim2.new(0.24219, 0, 0.18868, 0)
-G2L["Frame"].Position = UDim2.new(0.39063, 0, 0.19137, 0)
-G2L["Frame"].Active = true
-G2L["Frame"].Draggable = true
+local frame = Instance.new("Frame", G2L["ScreenGui"])
+frame.Size = UDim2.new(0.3, 0, 0.15, 0)
+frame.Position = UDim2.new(0.35, 0, 0.4, 0)
+frame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+frame.BorderSizePixel = 0
+frame.Active = true
+frame.Draggable = true
 
-G2L["Scriptbox"] = Instance.new("TextBox", G2L["Frame"])
-G2L["Scriptbox"].CursorPosition = -1
-G2L["Scriptbox"].Name = "Scriptbox"
-G2L["Scriptbox"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-G2L["Scriptbox"].BorderMode = Enum.BorderMode.Middle
-G2L["Scriptbox"].ClearTextOnFocus = false
-G2L["Scriptbox"].Size = UDim2.new(0.89032, 0, 0.34286, 0)
-G2L["Scriptbox"].Position = UDim2.new(0.03871, 0, 0.28571, 0)
-G2L["Scriptbox"].Text = ""
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1, 0, 0.3, 0)
+title.BackgroundTransparency = 1
+title.TextColor3 = Color3.new(1, 1, 1)
+title.TextScaled = true
+title.Text = "Backdoor Scanner (Private)"
+title.Font = Enum.Font.SourceSansBold
 
-G2L["Execute"] = Instance.new("TextButton", G2L["Frame"])
-G2L["Execute"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-G2L["Execute"].BorderMode = Enum.BorderMode.Middle
-G2L["Execute"].Size = UDim2.new(0.41935, 0, 0.21429, 0)
-G2L["Execute"].Text = "Execute"
-G2L["Execute"].Name = "Execute"
-G2L["Execute"].Position = UDim2.new(0.03871, 0, 0.72857, 0)
+local outputBox = Instance.new("TextBox", frame)
+outputBox.ClearTextOnFocus = false
+outputBox.MultiLine = true
+outputBox.Size = UDim2.new(1, -10, 0.6, -10)
+outputBox.Position = UDim2.new(0, 5, 0.3, 5)
+outputBox.TextWrapped = true
+outputBox.TextColor3 = Color3.new(1, 1, 1)
+outputBox.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+outputBox.Text = ""
+outputBox.Font = Enum.Font.Code
 
-G2L["Clear"] = Instance.new("TextButton", G2L["Frame"])
-G2L["Clear"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-G2L["Clear"].BorderMode = Enum.BorderMode.Middle
-G2L["Clear"].Size = UDim2.new(0.41935, 0, 0.21429, 0)
-G2L["Clear"].Text = "Clear"
-G2L["Clear"].Name = "Clear"
-G2L["Clear"].Position = UDim2.new(0.47742, 0, 0.72857, 0)
+-- No buttons needed to avoid flooding ---
 
-G2L["Title"] = Instance.new("TextLabel", G2L["Frame"])
-G2L["Title"].TextWrapped = true
-G2L["Title"].TextScaled = true
-G2L["Title"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-G2L["Title"].BorderMode = Enum.BorderMode.Middle
-G2L["Title"].Archivable = false
-G2L["Title"].Size = UDim2.new(0.99355, 0, 0.14286, 0)
-G2L["Title"].Text = "Cum Ui (Private Gui) --Made By Rxs. Do Not Redistribute If Leaked, If It Is Warn The Original Owner"
-G2L["Title"].Name = "Title"
-G2L["Title"].Position = UDim2.new(0, 0, -0.02857, 0)
-
-G2L["UIAspectRatioConstraint"] = Instance.new("UIAspectRatioConstraint", G2L["Frame"])
-G2L["UIAspectRatioConstraint"].AspectRatio = 2.21429
-
+-- Scan for remotes safely
 local remoteEvents = {}
 local remoteFunctions = {}
 
-local function recursiveSearch(parent)
-	for _, child in ipairs(parent:GetChildren()) do
-		if child:IsA("RemoteEvent") then
-			table.insert(remoteEvents, child)
-		elseif child:IsA("RemoteFunction") then
-			table.insert(remoteFunctions, child)
-		end
-		recursiveSearch(child)
-	end
+local function scanRemotes(parent)
+    for _, child in ipairs(parent:GetChildren()) do
+        if child:IsA("RemoteEvent") then
+            table.insert(remoteEvents, child)
+        elseif child:IsA("RemoteFunction") then
+            table.insert(remoteFunctions, child)
+        end
+        scanRemotes(child)
+    end
 end
 
-recursiveSearch(game)
+-- Initial scan
+scanRemotes(game)
 
+-- Helper to report
+local function report(text)
+    outputBox.Text = outputBox.Text .. text .. "\n"
+end
+
+-- Report discovered remotes on startup
+report("Scanning for RemoteEvents and RemoteFunctions...")
+report("RemoteEvents found: "..#remoteEvents)
+for _, re in ipairs(remoteEvents) do
+    report("Event: "..re:GetFullName())
+end
+report("RemoteFunctions found: "..#remoteFunctions)
+for _, rf in ipairs(remoteFunctions) do
+    report("Function: "..rf:GetFullName())
+end
+
+-- Listen for new remotes added during gameplay, report them too
 game.DescendantAdded:Connect(function(child)
-	if child:IsA("RemoteEvent") then
-		table.insert(remoteEvents, child)
-	elseif child:IsA("RemoteFunction") then
-		table.insert(remoteFunctions, child)
-	end
+    if child:IsA("RemoteEvent") then
+        table.insert(remoteEvents, child)
+        report("[Added] RemoteEvent: "..child:GetFullName())
+    elseif child:IsA("RemoteFunction") then
+        table.insert(remoteFunctions, child)
+        report("[Added] RemoteFunction: "..child:GetFullName())
+    end
 end)
 
 game.DescendantRemoving:Connect(function(child)
-	for i, v in ipairs(remoteEvents) do
-		if v == child then
-			table.remove(remoteEvents, i)
-			break
-		end
-	end
-	for i, v in ipairs(remoteFunctions) do
-		if v == child then
-			table.remove(remoteFunctions, i)
-			break
-		end
-	end
-end)
-
-local firingCooldownTime = 0.3 -- seconds between firing remotes
-local isFiring = false
-
-G2L["Execute"].MouseButton1Click:Connect(function()
-	if isFiring then return end
-	isFiring = true
-
-	local code = G2L["Scriptbox"].Text
-
-	-- Fire RemoteEvents with cooldown delay between each
-	coroutine.wrap(function()
-		for _, remoteEvent in ipairs(remoteEvents) do
-			pcall(function()
-				remoteEvent:FireServer(code)
-			end)
-			wait(firingCooldownTime)
-		end
-		for _, remoteFunction in ipairs(remoteFunctions) do
-			pcall(function()
-				remoteFunction:InvokeServer(code)
-			end)
-			wait(firingCooldownTime)
-		end
-		isFiring = false
-	end)()
-end)
-
-G2L["Clear"].MouseButton1Click:Connect(function()
-	G2L["Scriptbox"].Text = ""
+    -- Remove from lists silently, no report to reduce spam
+    for i, v in ipairs(remoteEvents) do
+        if v == child then
+            table.remove(remoteEvents, i)
+            break
+        end
+    end
+    for i, v in ipairs(remoteFunctions) do
+        if v == child then
+            table.remove(remoteFunctions, i)
+            break
+        end
+    end
 end)
 
 return G2L["ScreenGui"]
