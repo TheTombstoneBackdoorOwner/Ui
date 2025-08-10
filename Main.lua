@@ -47,7 +47,6 @@ Scriptbox.TextWrapped = true
 Scriptbox.MultiLine = true
 Scriptbox.CursorPosition = -1
 
--- Inject button
 local Inject = Instance.new("TextButton", Frame)
 Inject.Name = "Inject"
 Inject.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -59,7 +58,6 @@ Inject.TextColor3 = Color3.fromRGB(0, 0, 0)
 Inject.TextScaled = true
 Inject.Font = Enum.Font.SourceSans
 
--- Execute button
 local Execute = Instance.new("TextButton", Frame)
 Execute.Name = "Execute"
 Execute.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -71,7 +69,6 @@ Execute.TextColor3 = Color3.fromRGB(0, 0, 0)
 Execute.TextScaled = true
 Execute.Font = Enum.Font.SourceSans
 
--- Clear button
 local Clear = Instance.new("TextButton", Frame)
 Clear.Name = "Clear"
 Clear.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -85,8 +82,6 @@ Clear.Font = Enum.Font.SourceSans
 
 local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint", Frame)
 UIAspectRatioConstraint.AspectRatio = 2.21429
-
--- Button Logic --
 
 Inject.MouseButton1Click:Connect(function()
 	local function b_G_V12(see)
